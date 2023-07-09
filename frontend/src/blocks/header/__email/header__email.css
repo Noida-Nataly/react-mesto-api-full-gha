@@ -1,0 +1,13 @@
+.header__email {
+    align-self: center;
+    color: #FFF;
+    margin-right: 24px;
+}
+
+@media screen and (max-width: 880px) {
+    .header__email {
+        margin: 0 auto;
+        text-align: center;
+        max-width: calc(100% - 40px);
+    }
+}

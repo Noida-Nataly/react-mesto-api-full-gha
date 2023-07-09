@@ -1,0 +1,8 @@
+.location__like {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22px;
+  height: 35px;
+  margin-right: 5px;
+}

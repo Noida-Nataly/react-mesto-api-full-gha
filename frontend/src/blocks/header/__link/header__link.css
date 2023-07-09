@@ -1,0 +1,15 @@
+.header__link {
+    width: 56px;
+    padding-top: 7px;
+    color: #FFF;
+    text-align: right;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 880px) {
+    .header__link {
+        margin: 18px auto 0 auto;
+        text-align: center;
+        max-width: calc(100% - 40px);
+    }
+}

@@ -1,0 +1,12 @@
+.auth-form__button {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    margin-top: 215px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: #000000;
+}

@@ -1,0 +1,6 @@
+.location__description {
+  padding: 22px 15px 22px 21px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+}

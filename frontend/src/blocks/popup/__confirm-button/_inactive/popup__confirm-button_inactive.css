@@ -1,0 +1,12 @@
+.popup__confirm-button_inactive {
+  background-color: white;
+  border: 1px solid #000000;
+  color: black;
+  opacity: 0.2;
+}
+
+.popup__confirm-button_inactive:hover {
+  cursor: unset;
+  opacity: 0.2;
+  transition: unset;
+}

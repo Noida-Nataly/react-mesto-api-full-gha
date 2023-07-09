@@ -1,0 +1,14 @@
+.location__like-button {
+  width: 22px;
+  height: 19px;
+  border: none;
+  /*margin: 5px;*/
+  padding: 0;
+  background: rgba(255, 255, 255, 0) url("../../../images/like_icon.svg") no-repeat center/cover;
+}
+
+.location__like-button:hover {
+  cursor: pointer;
+  opacity: 50%;
+  transition: 0.3s opacity linear;
+}

@@ -1,0 +1,83 @@
+/* Подключение шрифтов и изменений браузерных стилей */
+@import url(../vendor/normalize.css);
+@import url(../vendor/font/inter.css);
+
+/* Подключение общих стилей */
+@import url(../blocks/page/page.css);
+@import url(../blocks/container/container.css);
+@import url(../blocks/button/button.css);
+
+/* Подключение стилей блока header */
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+@import url(../blocks/header/__wrapper/header__wrapper.css);
+@import url(../blocks/header/__button/header__button.css);
+@import url(../blocks/header/__link/header__link.css);
+@import url(../blocks/header/__email/header__email.css);
+@import url(../blocks/header/__text/header__text.css);
+
+/* Подключение стилей для блока profile */
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__description/profile__description.css);
+@import url(../blocks/profile/__name/profile__name.css);
+@import url(../blocks/profile/__add-button/profile__add-button.css);
+@import url(../blocks/profile/__edit-button/profile__edit-button.css);
+@import url(../blocks/profile/__avatar-image/profile__avatar-image.css);
+
+/* Подключение стилей для фото-галереи location */
+@import url(../blocks/location/location.css);
+@import url(../blocks/location/__list/location__list.css);
+@import url(../blocks/location/__card/location__card.css);
+@import url(../blocks/location/__image/location__image.css);
+@import url(../blocks/location/__description/location__description.css);
+@import url(../blocks/location/__title/location__title.css);
+@import url(../blocks/location/__like-button/location__like-button.css);
+@import url(../blocks/location/__like-button/_active/location__like-button_active.css);
+@import url(../blocks/location/__like/location__like.css);
+@import url(../blocks/location/__like-count/location__like-count.css);
+@import url(../blocks/location/__wrapper/location__wrapper.css);
+@import url(../blocks/location/__delete-button/location__delete-button.css);
+@import url(../blocks/location/__delete-button/_hidden/location__delete-button_hidden.css);
+
+
+/* Подключение стилей для блока footer */
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__paragraph/footer__paragraph.css);
+
+/* Подключение стилей для модальных окон popup */
+
+/* Подключение общих стилей popup */
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__close-button/popup__close-button.css);
+
+/* Подключение общих стилей popup-profile и popup-place */
+@import url(../blocks/popup/__title/popup__title.css);
+@import url(../blocks/popup/__input/popup__input.css);
+@import url(../blocks/popup/__input/_type/popup__input_type_error.css);
+@import url(../blocks/popup/__confirm-button/popup__confirm-button.css);
+@import url(../blocks/popup/__confirm-button/_inactive/popup__confirm-button_inactive.css);
+@import url(../blocks/popup/__error-message/popup__error-message.css);
+
+/* Подключение общих стилей popup-zoom-image */
+@import url(../blocks/popup/__container/_type/popup__container_type_zoom-image.css);
+@import url(../blocks/popup/__zoom-image/popup__zoom-image.css);
+@import url(../blocks/popup/__comment/popup__comment.css);
+
+/*Подключение стилей окон регистрации и авторизации*/
+@import url(../blocks/auth/auth.css);
+@import url(../blocks/auth/__title/auth__title.css);
+@import url(../blocks/auth/__span/auth__span.css);
+@import url(../blocks/auth/__link/auth__link.css);
+@import url(../blocks/auth-form/auth-form.css);
+@import url(../blocks/auth-form/__input/auth-form__input.css);
+@import url(../blocks/auth-form/__button/auth-form__button.css);
+
+@import url(../blocks/tooltip/tooltip.css);
+@import url(../blocks/tooltip/__image/tooltip__image.css);
+@import url(../blocks/tooltip/__text/tooltip__text.css);
+
+
