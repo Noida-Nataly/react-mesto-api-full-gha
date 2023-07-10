@@ -1,14 +1,13 @@
 import React from "react";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
-export default function Card({
-                                 card,
-                                 handleZoomPlaceClick,
-                                 handleCardLike,
-                                 handleCardDelete}) {
+export default function Card({card,
+                             handleZoomPlaceClick,
+                             handleCardLike,
+                             handleCardDelete}) {
     const currentUser = React.useContext(CurrentUserContext);
-    const isOwn = card.owner._id === currentUser._id;
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
+    const isOwn = card.owner === currentUser._id;
+    const isLiked = card.likes.some(like => like === currentUser._id);
     const cardLikeButtonClassName = ( `location__like-button button ${isLiked && 'location__like-button_active'}`)
 
     return (

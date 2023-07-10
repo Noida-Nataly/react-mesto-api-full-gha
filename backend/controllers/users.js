@@ -9,6 +9,16 @@ const NotUniqueDataError = require('../errors/not-unique-data-err');
 const InvalidDataError = require('../errors/invalid-data-err');
 const NotFoundError = require('../errors/not-found-err');
 
+module.exports.logout = (req, res, next) => {
+    res.clearCookie('token', {
+            maxAge: 3600000 * 24 * 7,
+            sameSite: 'none',
+            secure: NODE_ENV === 'production',
+            httpOnly: true,
+          })
+        .send({ message: 'Выход из системы прошёл успешно' });
+}
+
 module.exports.login = (req, res, next) => {
   const {
     email,

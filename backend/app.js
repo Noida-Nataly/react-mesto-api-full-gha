@@ -42,6 +42,7 @@ app.post('/signup', celebrate({
     avatar: Joi.string().pattern(regex),
   }),
 }), userController.createUser);
+app.get('/signout', userController.logout);
 
 app.use(authMiddleware.auth);
 

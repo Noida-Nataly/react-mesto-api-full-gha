@@ -37,7 +37,7 @@ function App() {
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
     const navigate = useNavigate();
-    const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isImagePopupOpen
+    const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isImagePopupOpen;
 
     useEffect(() => {
         function closeByEscape(evt) {
@@ -57,7 +57,6 @@ function App() {
             return () => {
                 document.removeEventListener('keydown', closeByEscape);
                 document.removeEventListener('mousedown', closeByOverlay);
-                console.log('remove');
             }
         }
     }, [isOpen])
@@ -69,7 +68,7 @@ function App() {
     useEffect(() => {
         Promise.all([api.getUserInfo(), api.getInitialCards()])
             .then(([userInfoResult, cardResult]) => {
-                setCurrentUser(userInfoResult);
+                setCurrentUser(userInfoResult.data);
                 setCards(cardResult);
             })
             .catch(console.error);
@@ -109,7 +108,7 @@ function App() {
     function handleUpdateUser (currentUser) {
         setIsLoading(true);
         api.editProfile(currentUser.name, currentUser.about).then((updatedUser) => {
-            setCurrentUser(updatedUser);
+            setCurrentUser(updatedUser.data);
             closeAllPopups();
         })
         .catch(console.error)
@@ -121,7 +120,7 @@ function App() {
     function handleUpdateAvatar (currentUser) {
         setIsLoading(true);
         api.updateAvatar(currentUser.avatar).then((updatedUser) => {
-            setCurrentUser(updatedUser);
+            setCurrentUser(updatedUser.data);
             closeAllPopups();
             })
             .catch(console.error)
@@ -133,7 +132,7 @@ function App() {
     function handleAddPlaceSubmit(card) {
         setIsLoading(true);
         api.addCard(card.name, card.link).then((newCard) => {
-            setCards([newCard, ...cards]);
+            setCards([newCard.data, ...cards]);
             closeAllPopups();
         })
             .catch(console.error)
@@ -144,12 +143,13 @@ function App() {
     }
 
     function handleCardLike (card) {
-        const isLiked = card.likes.some(like => like._id === currentUser._id);
+        const isLiked = card.likes.some(like => like === currentUser._id);
         api.toggleLike(card._id, isLiked).then((newCard) => {
                 setCards((state) => state.map((item) => item._id === card._id ? newCard : item));
             })
             .catch(console.error);
-        }
+    }
+
     function handleCardDelete (card) {
         setIsConfirmDeleteOpen(true);
         api.deleteCard(card._id).then(() => {
@@ -172,10 +172,12 @@ function App() {
     }
 
     function handleLogout () {
-        console.log(Cookies.get('token'))
-        Cookies.remove('token');
-        setLoggedIn(false);
-        setEmail('');
+        auth.unauthorizeUser()
+            .then((res) => {
+                setLoggedIn(false);
+                setEmail('');
+            })
+            .catch(console.error);
     }
 
     function registerUser(data) {

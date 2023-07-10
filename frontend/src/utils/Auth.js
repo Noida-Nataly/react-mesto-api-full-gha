@@ -41,6 +41,19 @@ class Auth {
         return this._sendRequest('/signin', email, password);
     }
 
+    unauthorizeUser() {
+        const parameters = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+        }
+
+        return this._request('/signout', parameters);
+    }
+
     getContent (token) {
         return this._request('/users/me', {
             method: 'GET',
