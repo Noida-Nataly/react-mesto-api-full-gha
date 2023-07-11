@@ -39,7 +39,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Ссылки на проект
 
-IP-адрес 51.250.2.239
+IP 051.250.002.239
 
 Frontend https://mesto-nataly.nomoredomains.work
 
