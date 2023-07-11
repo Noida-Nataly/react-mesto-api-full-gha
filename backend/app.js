@@ -1,10 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT, CONNECT_STRING, regex } = require('./utils/constants');
 const cardRouter = require('./routes/cards');
@@ -18,10 +20,18 @@ const NotFoundError = require('./errors/not-found-err');
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
-app.use(corsMiddleware);
+app.use(cookieParser()); // подключаем автообработку куки
+app.use(corsMiddleware); // подключаем кросс-доменную обработку
 
 mongoose.connect(CONNECT_STRING);
+
+app.use(requestLogger); // подключаем логгер запросов
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post(
   '/signin',
@@ -52,6 +62,8 @@ app.use('/users', userRouter);
 app.use('/*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(errors());
 app.use(errorsMiddleware);
