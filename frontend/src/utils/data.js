@@ -5,8 +5,8 @@ export const validationConfig = {
   popupInputSelector: '.popup__input'
 }
 
-export const baseUrl = 'api.mesto-nataly.nomoredomains.work';
+export const baseUrl = 'https://api.mesto-nataly.nomoredomains.work';
 
-export const authBaseUrl = 'api.mesto-nataly.nomoredomains.work';
+export const authBaseUrl = 'https://api.mesto-nataly.nomoredomains.work';
 
 export const token = '1c01ae86-354c-49a1-92cb-37fce79fdf70';
