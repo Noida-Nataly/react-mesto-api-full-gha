@@ -9,7 +9,7 @@ const NotUniqueDataError = require('../errors/not-unique-data-err');
 const InvalidDataError = require('../errors/invalid-data-err');
 const NotFoundError = require('../errors/not-found-err');
 
-module.exports.logout = (req, res, next) => {
+module.exports.logout = (req, res) => {
   res.clearCookie('token', {
     maxAge: 3600000 * 24 * 7,
     sameSite: 'none',
