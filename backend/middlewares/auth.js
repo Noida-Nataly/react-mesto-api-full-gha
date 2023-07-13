@@ -8,11 +8,11 @@ module.exports.auth = (req, res, next) => {
 
   try {
     if (!token) {
-      next(new NotAuthorizedError('Необходима авторизация'));
+      return next(new NotAuthorizedError('Необходима авторизация'));
     }
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    next(new NotAuthorizedError('Необходима авторизация'));
+    return next(new NotAuthorizedError('Необходима авторизация'));
   }
 
   req.user = payload;

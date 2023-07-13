@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET, NODE_ENV } = require('../utils/constants');
 const User = require('../models/user');
 const NotAuthorizedError = require('../errors/not-authorized-err');
-const UnknownError = require('../errors/unknown-err');
 const NotUniqueDataError = require('../errors/not-unique-data-err');
 const InvalidDataError = require('../errors/invalid-data-err');
 const NotFoundError = require('../errors/not-found-err');
@@ -28,12 +27,12 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error('Неправильные почта или пароль'));
+        return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new Error('Неправильные почта или пароль'));
+            return Promise.reject(new NotAuthorizedError('Неправильные почта или пароль'));
           }
           const token = jwt.sign(
             { _id: user._id },
@@ -50,9 +49,9 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.message === 'Неправильные почта или пароль') {
-        next(new NotAuthorizedError('Неправильные почта или пароль'));
+        next(err);
       } else {
-        next(new UnknownError());
+        next(err);
       }
     });
 };
@@ -81,7 +80,7 @@ module.exports.createUser = (req, res, next) => {
         } else if (err.name === 'ValidationError') {
           next(new InvalidDataError('Переданы некорректные данные при создании пользователя'));
         } else {
-          next(new UnknownError());
+          next(err);
         }
       }));
 };
@@ -89,20 +88,22 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send(users))
-    .catch(() => next(new UnknownError()));
+    .catch((err) => next(err));
 };
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
-    .orFail(new Error('InvalidID'))
+    .orFail(new NotFoundError('InvalidID'))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.message === 'InvalidID') {
-        next(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`));
+        // eslint-disable-next-line no-param-reassign
+        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
+        next(err);
       } else if (err.name === 'CastError') {
         next(new InvalidDataError('Некорректный идентификатор пользователя'));
       } else {
-        next(new UnknownError());
+        next(err);
       }
     });
 };
@@ -120,17 +121,17 @@ module.exports.updateProfile = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new Error('InvalidID'))
+    .orFail(new NotFoundError('InvalidID'))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.message === 'InvalidID') {
-        next(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`));
+        // eslint-disable-next-line no-param-reassign
+        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
+        next(err.message);
       } else if (err.name === 'ValidationError') {
         next(new InvalidDataError('Переданы некорректные данные при обновлении профиля.'));
-      } else if (err.name === 'CastError') {
-        next(new InvalidDataError('Некорректный идентификатор пользователя'));
       } else {
-        next(new UnknownError());
+        next(err);
       }
     });
 };
@@ -143,17 +144,17 @@ module.exports.updateAvatar = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new Error('InvalidID'))
+    .orFail(new NotFoundError('InvalidID'))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.message === 'InvalidID') {
-        next(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`));
-      } else if (err.name === 'CastError') {
-        next(new InvalidDataError('Некорректный идентификатор пользователя'));
+        // eslint-disable-next-line no-param-reassign
+        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
+        next(err);
       } else if (err.name === 'ValidationError') {
         next(new InvalidDataError('Переданы некорректные данные при обновлении аватара.'));
       } else {
-        next(new UnknownError());
+        next(err);
       }
     });
 };
