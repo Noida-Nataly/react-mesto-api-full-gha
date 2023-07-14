@@ -47,13 +47,7 @@ module.exports.login = (req, res, next) => {
           }).send({ message: 'Авторизация прошла успешно' });
         });
     })
-    .catch((err) => {
-      if (err.message === 'Неправильные почта или пароль') {
-        next(err);
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -93,14 +87,10 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
-    .orFail(new NotFoundError('InvalidID'))
+    .orFail(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.message === 'InvalidID') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
-        next(err);
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new InvalidDataError('Некорректный идентификатор пользователя'));
       } else {
         next(err);
@@ -121,14 +111,10 @@ module.exports.updateProfile = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError('InvalidID'))
+    .orFail(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.message === 'InvalidID') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
-        next(err.message);
-      } else if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         next(new InvalidDataError('Переданы некорректные данные при обновлении профиля.'));
       } else {
         next(err);
@@ -144,14 +130,10 @@ module.exports.updateAvatar = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError('InvalidID'))
+    .orFail(new NotFoundError(`Пользователь по указанному id:${req.params.userId} не найден`))
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.message === 'InvalidID') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Пользователь по указанному id:${req.params.userId} не найден`;
-        next(err);
-      } else if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         next(new InvalidDataError('Переданы некорректные данные при обновлении аватара.'));
       } else {
         next(err);

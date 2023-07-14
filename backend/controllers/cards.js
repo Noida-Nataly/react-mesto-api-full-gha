@@ -26,7 +26,7 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteCardById = (req, res, next) => {
   Card.findById(req.params.id)
-    .orFail(new NotFoundError('InvalidId'))
+    .orFail(new NotFoundError(`Карточка с указанным id:${req.params.id} не найдена`))
     .then((card) => {
       if (card.owner.toString() !== req.user._id) {
         return Promise.reject(new AccessDeniedError('Извините, но Вы не можете удалить чужое место'));
@@ -37,10 +37,6 @@ module.exports.deleteCardById = (req, res, next) => {
 
     .catch((err) => {
       if (err.message === 'Извините, но Вы не можете удалить чужое место') {
-        next(err);
-      } else if (err.message === 'InvalidId') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Карточка с указанным id:${req.params.id} не найдена`;
         next(err);
       } else if (err.name === 'CastError') {
         next(new InvalidDataError('Некорректный идентификатор карты'));
@@ -59,14 +55,10 @@ module.exports.likeCardById = (req, res, next) => {
     { $addToSet: { likes: _id } },
     { new: true },
   )
-    .orFail(new NotFoundError('InvalidId'))
+    .orFail(new NotFoundError(`Передан несуществующий id:${cardId} карточки`))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.message === 'InvalidId') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Передан несуществующий id:${cardId} карточки`;
-        next(err);
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new InvalidDataError('Некорректный идентификатор карты'));
       } else {
         next(err);
@@ -83,14 +75,10 @@ module.exports.dislikeCardById = (req, res, next) => {
     { $pull: { likes: _id } },
     { new: true },
   )
-    .orFail(new NotFoundError('InvalidId'))
+    .orFail(new NotFoundError(`Передан несуществующий id:${cardId} карточки`))
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.message === 'InvalidId') {
-        // eslint-disable-next-line no-param-reassign
-        err.message = `Передан несуществующий id:${cardId} карточки`;
-        next(err);
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new InvalidDataError('Некорректный идентификатор карты'));
       } else {
         next(err);
